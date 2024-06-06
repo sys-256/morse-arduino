@@ -5,9 +5,9 @@
 	- Regex weghalen -> doen
 	- Layout knopjes -> enkele icm milis()
 	- É weghalen -> doen
-	- char Values[] -> string Values[] met echte Arduino -> klopt wss, testen met echte arduino
+	- char Values[] -> string Values[] met echte Arduino -> klopt wss, testen met echte arduino -> werkt niet dus als char laten
 
 taken:
-- input knop naar morse
-- printen op LCD
-- behuizing
+- input knop naar morse -> mika
+- printen op LCD -> bram
+- behuizing -> zien we wel of dat nog lukt
