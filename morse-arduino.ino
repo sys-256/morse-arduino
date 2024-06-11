@@ -1,3 +1,4 @@
+// Include libraries
 #include <LiquidCrystal.h>
 
 // Initialize all physical inputs
@@ -25,7 +26,7 @@ void setup()
 	Serial.begin(115200);
 	pinMode(buttonPin, INPUT);
 	pinMode(translatePin, INPUT);
-	
+
 	lcd.begin(16, 2);
 	lcd.setCursor(0,0);
 	lcd.print("Enter morse:");
@@ -33,7 +34,6 @@ void setup()
 	lcd.clear();
 };
 
-// run everytime
 void loop()
 {
 	lcd.setCursor(0,0);
@@ -53,23 +53,23 @@ void loop()
 		translatePress = 1;
 	};
 
-	// prevent infinite loop on translate button press
+	// Prevent infinite loop on translate button press
 	if (digitalRead(translatePin) == 0 && translatePress == 1)
 	{
 		translatePress = 0;
 		morseToTranslate = "";
 	};
 
-	// when morse button press
+	// When morse button press
 	if (digitalRead(buttonPin) == 1)
 	{
-		lastTimeChanged = millis(); // store time when pressed
+		lastTimeChanged = millis(); // Store time of when pressed
 
 		while (digitalRead(buttonPin) == 1)
 		{
-		}; // wait until unpressed
+		}; // Wait until unpressed
 
-		// execute code depending on time pressed
+		// Execute code depending on time pressed
 		if (millis() - lastTimeChanged < 15)
 		{
 			Serial.println("False Registery");
@@ -97,7 +97,6 @@ void loop()
 	};
 };
 
-// morseToText function
 String morseToText(String input)
 {
 	// Convert to buffer
