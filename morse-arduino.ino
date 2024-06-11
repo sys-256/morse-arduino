@@ -1,4 +1,12 @@
-const String morseToTranslate = ".-..-. - . ... - .----. -..-. ..--- ---.. ----. ...-- ---... / -.--. -...- .-.-.- --..-- -.--.-";
+// initialize all fysical inputs
+const int buttonPin = 2;
+const int translatePin = 3;
+
+// initialize all variables
+long lastTimeChanged = 0;
+int translatePress = 0;
+
+String morseToTranslate = "";
 const char Values[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,:?'-/()\"=+@ ";
 const String Keys[50] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---",
 						 "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-",
@@ -7,21 +15,17 @@ const String Keys[50] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "...."
 						 "---...", "..--..", ".----.", "-....-", "-..-.", "-.--.", "-.--.-", ".-..-.",
 						 "-...-", ".-.-.", ".--.-.", "/"};
 
-void setup()
-{
-	Serial.begin(115200);
-}
 
-void loop()
-{
-	Serial.println(morseToTranslate);
-	Serial.println(morseToText(morseToTranslate));
-	Serial.println();
-	delay(1000);
-}
+// setup serial and pinmodes
+void setup() {
+  pinMode(buttonPin, INPUT);	
+  pinMode(translatePin, INPUT);	
+  Serial.begin(9600);
+};
 
-String morseToText(String input)
-{
+
+// morseToText function 
+String morseToText(String input){
 	/* Convert to buffer */
 	char buffer[input.length() + 1];
 	input.toCharArray(buffer, input.length() + 1);
@@ -50,3 +54,53 @@ String morseToText(String input)
 
 	return result;
 }
+
+
+// run everytime
+void loop() {
+
+  // when translate button pressed 
+  if(digitalRead(translatePin) == 1 && translatePress == 0){
+    Serial.println(morseToTranslate);
+    Serial.println(morseToText(morseToTranslate));
+
+    translatePress = 1;
+  };
+
+  // prevent infinite loop on translate button press
+  if(digitalRead(translatePin) == 0 && translatePress == 1){
+    translatePress = 0;
+    morseToTranslate = "";
+  };
+
+	
+  // when morse button press
+  if(digitalRead(buttonPin) == 1){
+    lastTimeChanged = millis(); // store time when pressed
+
+    while(digitalRead(buttonPin) == 1){}; // wait until unpressed
+
+    // execute code depending on time pressed
+    if(millis() - lastTimeChanged < 15){
+      Serial.println("False Registery");
+    }else if(millis() - lastTimeChanged < 250){
+      Serial.println("Short");
+      morseToTranslate = morseToTranslate + ".";
+    }else if(millis() - lastTimeChanged < 1000){
+      Serial.println("Long");
+      morseToTranslate = morseToTranslate + "-";
+    }else if(millis() - lastTimeChanged < 4000){
+      Serial.println("nieuwe letter");
+      morseToTranslate = morseToTranslate + " ";
+    }else{
+      Serial.println("Space");     
+      morseToTranslate = morseToTranslate + "/";   
+    };
+  };
+
+
+};
+
+
+
+
