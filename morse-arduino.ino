@@ -1,10 +1,15 @@
-// initialize all fysical inputs
+#include <LiquidCrystal.h>
+
+// Initialize all physical inputs
 const int buttonPin = 2;
 const int translatePin = 3;
 
-// initialize all variables
+// Initialize all variables
 long lastTimeChanged = 0;
 int translatePress = 0;
+
+const int rs = 12, en = 11, d4 = 4, d5 = 5, d6 = 6, d7 = 7;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 String morseToTranslate = "";
 const char Values[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,:?'-/()\"=+@ ";
@@ -15,22 +20,35 @@ const String Keys[50] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "...."
 						 "---...", "..--..", ".----.", "-....-", "-..-.", "-.--.", "-.--.-", ".-..-.",
 						 "-...-", ".-.-.", ".--.-.", "/"};
 
-// setup serial and pinmodes
 void setup()
 {
+	Serial.begin(115200);
 	pinMode(buttonPin, INPUT);
 	pinMode(translatePin, INPUT);
-	Serial.begin(9600);
+	
+	lcd.begin(16, 2);
+	lcd.setCursor(0,0);
+	lcd.print("Enter morse:");
+	delay(1000);
+	lcd.clear();
 };
 
 // run everytime
 void loop()
 {
+	lcd.setCursor(0,0);
+	lcd.print(morseToTranslate);
+	lcd.blink();
+
 	// When the translate button is pressed
 	if (digitalRead(translatePin) == 1 && translatePress == 0)
 	{
 		Serial.println(morseToTranslate);
 		Serial.println(morseToText(morseToTranslate));
+		lcd.clear();
+		lcd.print(morseToText(morseToTranslate));
+		delay(3000);
+		lcd.clear();
 
 		translatePress = 1;
 	};

@@ -10,6 +10,9 @@ Evt. later aanpassen:
 
 -   Datatype van `morseToTranslate` van `String` naar `char` veranderen (want dan is omzetten naar buffer niet meer nodig, maar voor knopje naar morse is String misschien handiger)
 
+LiquidCrystal:
+- Via arduino IDE installeren, staat niet op Vscode library manager
+
 Initialiseren Arduino:
 - Installeer [de arduino extensie](https://github.com/microsoft/vscode-arduino)
 - Verwijder .vscode/
