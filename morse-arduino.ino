@@ -47,8 +47,10 @@ void loop()
 		Serial.println(morseToText(morseToTranslate));
 		lcd.clear();
 		lcd.print(morseToText(morseToTranslate));
+		lcd.noBlink();
 		delay(3000);
 		lcd.clear();
+		lcd.blink();
 
 		translatePress = 1;
 	};
