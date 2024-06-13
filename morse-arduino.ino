@@ -1,11 +1,11 @@
-// Include libraries
+// Bibliotheken toevoegen
 #include <LiquidCrystal.h>
 
-// Initialize all physical inputs
+// Knopjes initialiseren
 const int buttonPin = 2;
 const int translatePin = 3;
 
-// Initialize all variables
+// Variabelen initialiseren
 long lastTimeChanged = 0;
 int translatePress = 0;
 
@@ -40,7 +40,7 @@ void loop()
 	lcd.print(morseToTranslate);
 	lcd.blink();
 
-	// When the translate button is pressed
+	// Als de vertaal knop ingedrukt wordt
 	if (digitalRead(translatePin) == 1 && translatePress == 0)
 	{
 		Serial.println(morseToTranslate);
@@ -55,23 +55,24 @@ void loop()
 		translatePress = 1;
 	};
 
-	// Prevent infinite loop on translate button press
+	// Voorkom een oneindige loop na het indrukken van de vertaal knop
 	if (digitalRead(translatePin) == 0 && translatePress == 1)
 	{
 		translatePress = 0;
 		morseToTranslate = "";
 	};
 
-	// When morse button press
+	// Als de morse code knop wordt ingedrukt
 	if (digitalRead(buttonPin) == 1)
 	{
-		lastTimeChanged = millis(); // Store time of when pressed
+		// Begintijd van indrukken opslaan
+		lastTimeChanged = millis();
 
 		while (digitalRead(buttonPin) == 1)
 		{
-		}; // Wait until unpressed
+		}; // Wacht totdat de knop weer wordt losgelaten
 
-		// Execute code depending on time pressed
+		// morseToTranslate aanpassen op basis van hoe lang de knop ingedrukt is geweest
 		if (millis() - lastTimeChanged < 15)
 		{
 			Serial.println("False Registery");
@@ -101,17 +102,17 @@ void loop()
 
 String morseToText(String input)
 {
-	// Convert to buffer
+	// Omzetten naar buffer
 	char buffer[input.length() + 1];
 	input.toCharArray(buffer, input.length() + 1);
 
-	// Split at every space
+	// Splitten bij elke spatie
 	char *currentSplit;
 	String result = "";
 	currentSplit = strtok(buffer, " ");
 	while (currentSplit != NULL)
 	{
-		// Find the index of the key
+		// Index van de key vinden
 		int keyIndex;
 		for (int i = 0; i < sizeof(Keys) / sizeof(Keys[0]); ++i)
 		{
@@ -122,7 +123,7 @@ String morseToText(String input)
 			}
 		}
 
-		// Add the value to the result
+		// Waarde aan het eindresultaat toevoegen
 		result += String(Values[keyIndex]);
 		currentSplit = strtok(NULL, " ");
 	}

@@ -10,6 +10,10 @@ Evt. aanpassen:
 
 -   Serial weg
 
+Bugs:
+
+-   Morse code & vertaling gebruiken alleen de eerste regel
+
 LiquidCrystal:
 
 -   Via arduino IDE installeren, staat niet op Vscode library manager
