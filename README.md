@@ -1,19 +1,5 @@
 # morse-arduino
 
-Taakverdeling:
-
--   Mika: input knop naar morse
--   Bram: printen op LCD
--   Behuizing -> we zien nog wel of dat lukt
-
-Evt. aanpassen:
-
--   Serial weg
-
-Bugs:
-
--   Morse code & vertaling gebruiken alleen de eerste regel
-
 LiquidCrystal:
 
 -   Via arduino IDE installeren, staat niet op Vscode library manager

@@ -28,17 +28,21 @@ void setup()
 	pinMode(translatePin, INPUT);
 
 	lcd.begin(16, 2);
-	lcd.setCursor(0,0);
-	lcd.print("Enter morse:");
+	lcd.setCursor(0, 0);
+	lcdPrint("Enter morse:");
 	delay(1000);
 	lcd.clear();
+	lcd.blink();
 };
 
 void loop()
 {
-	lcd.setCursor(0,0);
-	lcd.print(morseToTranslate);
-	lcd.blink();
+	lcdPrint(morseToTranslate);
+
+	// Wacht tot er een knop word ingedrukt zodat blinken goed te zien is
+	while (digitalRead(buttonPin) != 1 && digitalRead(translatePin) != 1)
+	{
+	}
 
 	// Als de vertaal knop ingedrukt wordt
 	if (digitalRead(translatePin) == 1 && translatePress == 0)
@@ -46,7 +50,7 @@ void loop()
 		Serial.println(morseToTranslate);
 		Serial.println(morseToText(morseToTranslate));
 		lcd.clear();
-		lcd.print(morseToText(morseToTranslate));
+		lcdPrint(morseToText(morseToTranslate));
 		lcd.noBlink();
 		delay(3000);
 		lcd.clear();
@@ -99,6 +103,28 @@ void loop()
 		};
 	};
 };
+
+void lcdPrint(String input)
+{
+	// Omzetten naar buffer
+	char buffer[input.length() + 1];
+	input.toCharArray(buffer, input.length() + 1);
+
+	for (int i = 0; i < 32; ++i)
+	{
+		if (!input[i])
+		{
+			// Cursor alvast op volgende lijn
+			if (i == 16)
+			{
+				lcd.setCursor(0, 1);
+			}
+			break;
+		}
+		lcd.setCursor(i - (i > 15 ? 16 : 0), !(i <= 15));
+		lcd.print(input[i]);
+	}
+}
 
 String morseToText(String input)
 {
